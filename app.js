@@ -4,10 +4,7 @@ const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
-
-//const isAuthenticated = require('./middleware');
-//app.use(isAuthenticated);
-
+app.use(express.static('views'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -21,6 +18,26 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }));
+
+
+const signupRoutes = require('./routes/signup.routes.js');
+const loginRoutes = require('./routes/login.routes.js');
+
+
+app.use(signupRoutes);
+app.use(loginRoutes);
+
+
+function ensureAuthenticated (req, res, next) {
+    const publicPaths = ['/', '/login', '/signup'];
+    if (publicPaths.includes(req.path) || req.session.isAuthenticated) {
+        return next();
+    }
+    res.redirect('/login');
+}
+
+app.use(ensureAuthenticated);
+
 
 const port = 3000;
 app.listen(port, () => {
