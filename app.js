@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -19,22 +21,14 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-
+const {ensureAuthenticated} = require('./authMiddleware.js');
 const signupRoutes = require('./routes/signup.routes.js');
 const loginRoutes = require('./routes/login.routes.js');
-
+const adminRoutes = require('./routes/admin.routes.js');
 
 app.use(signupRoutes);
 app.use(loginRoutes);
-
-
-function ensureAuthenticated (req, res, next) {
-    const publicPaths = ['/', '/login', '/signup'];
-    if (publicPaths.includes(req.path) || req.session.isAuthenticated) {
-        return next();
-    }
-    res.redirect('/login');
-}
+app.use(adminRoutes);
 
 app.use(ensureAuthenticated);
 
