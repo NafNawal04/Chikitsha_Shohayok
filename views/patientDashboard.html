@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Patient Dashboard</title>
+    <script>
+      
+        async function loadDoctors() {
+            try {
+                const response = await fetch('/patient/doctors');
+                const doctors = await response.json();
+
+                const doctorsList = document.getElementById('doctors-list');
+                doctors.forEach(doctor => {
+                    const doctorItem = document.createElement('li');
+                    doctorItem.innerHTML = `
+                        <strong>Name:</strong> ${doctor.name} <br>
+                        <strong>Specialization:</strong> ${doctor.specialization} <br>
+                        <form action="/patient/book-appointment" method="POST">
+                            <input type="hidden" name="doctorId" value="${doctor.id}">
+                            <label for="appointmentDate">Select Appointment Date:</label>
+                            <input type="date" name="appointmentDate" required>
+                            <button type="submit">Book Appointment</button>
+                        </form>
+                    `;
+                    doctorsList.appendChild(doctorItem);
+                });
+            } catch (error) {
+                console.error('Error fetching doctors:', error);
+            }
+        }
+
+        // Load doctors when the page loads
+        window.onload = loadDoctors;
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Patient Dashboard</h1>
+
+    <h2>Available Doctors</h2>
+    <ul id="doctors-list">
+        <!-- Doctors will be dynamically populated here -->
+    </ul>
+</body>
+</html>

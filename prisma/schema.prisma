@@ -17,3 +17,18 @@ model User {
   password String
   role     String @default("patient")
 }
+
+
+model Doctor {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  specialization String
+}
+
+model Appointment {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String
+  doctorId        String
+  appointmentDate DateTime
+  serialNumber    Int
+}
