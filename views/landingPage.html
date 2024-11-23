@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Appointment System</title>
+</head>
+<body>
+  <div>
+    <h1>Hospital Appointment System</h1>
+    <button onclick="window.location.href='/login'">Login</button>
+    <button onclick="window.location.href='/signup'">Sign Up</button>
+    <hr>
+    <h2>Our Doctors</h2>
+    <div id="doctors-list"></div>
+  </div>
+
+  <script>
+    fetch('/landing/doctors')
+      .then(response => response.json())
+      .then(doctors => {
+        const doctorsListDiv = document.getElementById('doctors-list');
+        doctors.forEach(doctor => {
+          const doctorDiv = document.createElement('div');
+          doctorDiv.innerHTML = `
+            <h3>Name: ${doctor.name}</h3>
+            <p>Specialization: ${doctor.specialization}</p>
+            <p>Bio: ${doctor.bio}</p>
+            <hr>
+          `;
+          doctorsListDiv.appendChild(doctorDiv);
+        });
+      })
+      .catch(error => {
+        console.error('Error loading doctors:', error);
+        const doctorsListDiv = document.getElementById('doctors-list');
+        doctorsListDiv.innerHTML = '<p>Unable to load doctors at this time. Please try again later.</p>';
+      });
+  </script>
+</body>
+</html>

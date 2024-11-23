@@ -23,6 +23,9 @@ model Doctor {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
   name           String
   specialization String
+  bio            String
+  roomNumber     String
+  schedule       String 
 }
 
 model Appointment {

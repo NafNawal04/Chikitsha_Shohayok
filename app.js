@@ -23,7 +23,7 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-
+const landingPageRoutes = require('./routes/landing.routes.js');
 const signupRoutes = require('./routes/signup.routes.js');
 const loginRoutes = require('./routes/login.routes.js');
 const adminRoutes = require('./routes/admin.routes.js');
@@ -31,10 +31,12 @@ const patientRoutes = require('./routes/patient.routes.js');
 
 
 
+app.use(landingPageRoutes);
 app.use(signupRoutes);
 app.use(loginRoutes);
 app.use(adminRoutes);
 app.use(patientRoutes);
+
 
 app.use(ensureAuthenticated);
 
