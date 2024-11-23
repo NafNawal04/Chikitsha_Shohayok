@@ -2,43 +2,111 @@
 <html lang="en">
 <head>
     <title>Patient Dashboard</title>
-    <script>
-      
-        async function loadDoctors() {
-            try {
-                const response = await fetch('/patient/doctors');
-                const doctors = await response.json();
-
-                const doctorsList = document.getElementById('doctors-list');
-                doctors.forEach(doctor => {
-                    const doctorItem = document.createElement('li');
-                    doctorItem.innerHTML = `
-                        <strong>Name:</strong> ${doctor.name} <br>
-                        <strong>Specialization:</strong> ${doctor.specialization} <br>
-                        <form action="/patient/book-appointment" method="POST">
-                            <input type="hidden" name="doctorId" value="${doctor.id}">
-                            <label for="appointmentDate">Select Appointment Date:</label>
-                            <input type="date" name="appointmentDate" required>
-                            <button type="submit">Book Appointment</button>
-                        </form>
-                    `;
-                    doctorsList.appendChild(doctorItem);
-                });
-            } catch (error) {
-                console.error('Error fetching doctors:', error);
-            }
-        }
-
-        // Load doctors when the page loads
-        window.onload = loadDoctors;
-    </script>
 </head>
 <body>
     <h1>Welcome to the Patient Dashboard</h1>
 
+    <div style="text-align: right; margin-bottom: 20px;">
+        <input
+            type="text"
+            id="search-input"
+            placeholder="Search by name or specialization"
+            oninput="searchDoctors()"
+        />
+        <button onclick="searchDoctors()">Search</button>
+    </div>
+
     <h2>Available Doctors</h2>
-    <ul id="doctors-list">
-        <!-- Doctors will be dynamically populated here -->
-    </ul>
+    <div id="doctors-list">
+     
+    </div>
 </body>
+<script>
+    let allDoctors = []; 
+
+    async function loadDoctors() {
+        const response = await fetch('/patient/doctors');
+        allDoctors = await response.json(); 
+        renderDoctors(allDoctors);
+    }
+
+    function renderDoctors(doctors) {
+        const doctorsList = document.getElementById('doctors-list');
+        doctorsList.innerHTML = '';
+
+        doctors.forEach(doctor => {
+            const doctorDiv = document.createElement('div');
+            doctorDiv.innerHTML = `
+                <h3>${doctor.name}</h3>
+                <p>Specialization: ${doctor.specialization}</p>
+                <p>Bio: ${doctor.bio}</p>
+                <h4>Comments</h4>
+                <div id="comments-${doctor.id}"></div>
+                <textarea id="new-comment-${doctor.id}" placeholder="Write a comment..."></textarea>
+                <button onclick="postComment('${doctor.id}')">Post Comment</button>
+                <hr>
+            `;
+            doctorsList.appendChild(doctorDiv);
+
+            loadComments(doctor.id);
+        });
+    }
+
+    async function loadComments(doctorId) {
+        const response = await fetch(`/doctor/comments?doctorId=${doctorId}`);
+        const comments = await response.json();
+
+        const commentsDiv = document.getElementById(`comments-${doctorId}`);
+        commentsDiv.innerHTML = '';
+
+        comments.forEach(comment => {
+            const commentDiv = document.createElement('div');
+            commentDiv.innerHTML = `
+                <p><strong>${comment.patientName}:</strong> ${comment.content}</p>
+                <textarea id="reply-${comment.id}" placeholder="Write a reply..."></textarea>
+                <button onclick="postReply('${doctorId}', '${comment.id}')">Reply</button>
+                <div id="replies-${comment.id}">
+                    ${comment.replies.map(reply => `<p><strong>${reply.patientName}:</strong> ${reply.content}</p>`).join('')}
+                </div>
+            `;
+            commentsDiv.appendChild(commentDiv);
+        });
+    }
+
+    async function postComment(doctorId) {
+        const content = document.getElementById(`new-comment-${doctorId}`).value;
+
+        await fetch('/doctor/comments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ doctorId, content }),
+        });
+
+        loadComments(doctorId);
+    }
+
+    async function postReply(doctorId, parentId) {
+        const content = document.getElementById(`reply-${parentId}`).value;
+
+        await fetch('/doctor/comments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ doctorId, content, parentId }),
+        });
+
+        loadComments(doctorId);
+    }
+
+    async function searchDoctors() {
+        const searchInput = document.getElementById('search-input').value.toLowerCase();
+        const filteredDoctors = allDoctors.filter(doctor =>
+            doctor.name.toLowerCase().includes(searchInput) ||
+            doctor.specialization.toLowerCase().includes(searchInput)
+        );
+        renderDoctors(filteredDoctors); 
+    }
+
+    window.onload = loadDoctors; 
+</script>
+
 </html>

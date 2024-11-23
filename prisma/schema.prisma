@@ -16,17 +16,33 @@ model User {
   email    String @unique
   password String
   role     String @default("patient")
+  comments       Comment[]
 }
 
 
 model Doctor {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
   name           String
   specialization String
   bio            String
   roomNumber     String
-  schedule       String 
+  schedule       String
+  comments       Comment[] 
 }
+
+model Comment {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  content    String
+  createdAt  DateTime @default(now())
+  doctorId   String   @db.ObjectId
+  patientId  String   @db.ObjectId
+  parentId   String?  @db.ObjectId
+  doctor     Doctor   @relation(fields: [doctorId], references: [id])
+  patient    User     @relation(fields: [patientId], references: [id])
+  replies    Comment[] @relation("CommentReplies")
+  parent     Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 
 model Appointment {
   id              String @id @default(auto()) @map("_id") @db.ObjectId

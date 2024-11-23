@@ -8,6 +8,8 @@ router.get('/patient/dashboard', (req, res) => {
 });
 
 router.get('/patient/doctors', patientController.getDashboard);
+router.get('/doctor/comments', patientController.getComments);
+router.post('/doctor/comments', patientController.postComment);
 
 router.post('/patient/book-appointment',patientController.bookAppointment);
 

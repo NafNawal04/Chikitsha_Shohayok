@@ -69,7 +69,60 @@ const bookAppointment = async (req, res) => {
     }
   };
   
+const getComments = async (req, res) => {
+    const { doctorId } = req.query;
+  
+    try {
+      const comments = await prisma.comment.findMany({
+        where: { doctorId, parentId: null },
+        include: {
+          replies: {
+            include: {
+              patient: { select: { name: true } },
+            },
+          },
+          patient: { select: { name: true } },
+        },
+      });
+  
+      res.json(comments.map(comment => ({
+        id: comment.id,
+        content: comment.content,
+        patientName: comment.patient.name,
+        replies: comment.replies.map(reply => ({
+          id: reply.id,
+          content: reply.content,
+          patientName: reply.patient.name,
+        })),
+      })));
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      res.status(500).json({ error: 'Error fetching comments.' });
+    }
+};
+  
+
+const postComment = async (req, res) => {
+    const { doctorId, content, parentId } = req.body;
+    const patientId = req.session.userId;
+  
+    try {
+      const newComment = await prisma.comment.create({
+        data: {
+          doctorId,
+          patientId,
+          content,
+          parentId,
+        },
+      });
+  
+      res.status(201).json(newComment);
+    } catch (error) {
+      console.error('Error posting comment:', error);
+      res.status(500).json({ error: 'Error posting comment.' });
+    }
+};
+  
 
 
-
-module.exports = {bookAppointment, getDashboard};
+module.exports = {bookAppointment, getDashboard, getComments, postComment};
