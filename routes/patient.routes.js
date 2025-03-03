@@ -8,9 +8,13 @@ router.get('/patient/dashboard', (req, res) => {
 });
 
 router.get('/patient/doctors', patientController.getDashboard);
+
+router.get('/patient/doctors', patientController.getDoctors);
+
 router.get('/doctor/comments', patientController.getComments);
+
 router.post('/doctor/comments', patientController.postComment);
 
-router.post('/patient/book-appointment',patientController.bookAppointment);
+
 
 module.exports = router;

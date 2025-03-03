@@ -28,27 +28,24 @@ model Doctor {
   roomNumber     String
   schedule       String
   comments       Comment[]
+  profileImage   String?
 }
+
 
 model Comment {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  doctorId    String    @db.ObjectId
-  userId      String    @db.ObjectId
-  content     String
-  parentId    String?   @db.ObjectId
-  replies     Comment[] @relation("CommentReplies")
-  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  createdAt   DateTime  @default(now())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  userId    String   @db.ObjectId 
+  doctorId  String   @db.ObjectId
+  parentId  String?  @db.ObjectId 
+  createdAt DateTime @default(now())
 
-  doctor      Doctor    @relation(fields: [doctorId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
+  // Relationships
+  user      User     @relation(fields: [userId], references: [id])
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id],onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("CommentReplies")
 }
 
 
-model Appointment {
-  id              String @id @default(auto()) @map("_id") @db.ObjectId
-  patientId       String
-  doctorId        String
-  appointmentDate DateTime
-  serialNumber    Int
-}
+

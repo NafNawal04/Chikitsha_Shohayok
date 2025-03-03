@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: url('https://elementor.com/cdn-cgi/image/f=auto,w=800,h=450/https://elementor.com/blog/wp-content/uploads/2021/09/1-linear-color-gradient-example-1024x576.jpg') center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+.dashboard-container {
+    width: 80%;
+    margin-top: 20px;
+    background-color: rgb(238, 240, 244);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+.welcome-message {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+
+.search-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#search-input {
+    width: 70%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #1abc9c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #16a085;
+}
+
+
+#doctor-container {
+    display: flex;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.doctor-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.doctor-card:hover {
+    transform: translateY(-10px);
+}
+
+.doctor-card h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.doctor-card p {
+    font-size: 12px;
+    text-align: left;
+    justify-content: left;
+    color: #7f8c8d;
+}
+
+.doctor-card button {
+    background-color: #28a745;
+    color: white;
+    margin-top: 10px;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.doctor-card button:hover {
+    background-color: #218838;
+}
+
+.doctor-card.expanded {
+    height: auto;
+}
+
+.doctor-card.expanded .comment-section {
+    display: block;
+}
+
+.comment-section {
+    display: none;
+    margin-top: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: #16a085;
+}
+
+/* Comment & Reply */
+.comment {
+    margin-bottom: 15px;
+}
+
+.comment-item {
+    margin-bottom: 15px;
+}
+
+.comment-item p {
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+.comment-item button {
+    padding: 5px 10px;
+    background-color: #e67e22;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comment-item button:hover {
+    background-color: #d35400;
+}
+
+/* Separator */
+hr {
+    margin-top: 20px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin-bottom: 20px;
+}

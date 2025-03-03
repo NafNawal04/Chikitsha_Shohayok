@@ -2,111 +2,120 @@
 <html lang="en">
 <head>
     <title>Patient Dashboard</title>
+    <link rel="stylesheet" href="../styles/patientDashboard.css">
 </head>
 <body>
-    <h1>Welcome to the Patient Dashboard</h1>
+    <div class="dashboard-container">
+        <h1 class="welcome-message">Welcome to the Patient Dashboard</h1>
 
-    <div style="text-align: right; margin-bottom: 20px;">
-        <input
-            type="text"
-            id="search-input"
-            placeholder="Search by name or specialization"
-            oninput="searchDoctors()"
-        />
-        <button onclick="searchDoctors()">Search</button>
+        <div class="search-container">
+            <input
+                type="text"
+                id="search-input"
+                placeholder="Search by name or specialization"
+                oninput="searchDoctors()"
+            />
+            <button class="search-button" onclick="searchDoctors()">Search</button>
+        </div>
+
+        <h2>Available Doctors</h2>
+        <div id="doctor-container">
+           
+        </div>
     </div>
 
-    <h2>Available Doctors</h2>
-    <div id="doctors-list">
-     
-    </div>
+    <script>
+        let allDoctors = [];
+
+        async function loadDoctors() {
+            const response = await fetch('/patient/doctors');
+            allDoctors = await response.json(); 
+            renderDoctors(allDoctors);
+        }
+
+        function renderDoctors(doctors) {
+            const doctorsList = document.getElementById('doctor-container');
+            doctorsList.innerHTML = '';
+
+            doctors.forEach(doctor => {
+                const doctorDiv = document.createElement('div');
+                doctorDiv.classList.add('doctor-card');
+                doctorDiv.setAttribute('id', `doctor-card-${doctor.id}`);
+                doctorDiv.innerHTML = `
+                    <h3>${doctor.name}</h3>
+                    <p><span style="color: black;">Specialization:</span> ${doctor.specialization}</p>
+                    <p><span style="color: black;">Bio:</span>${doctor.bio}</p>
+                    <button onclick="viewComments('${doctor.id}')">View Comments</button>
+                    <div class="comment-section" id="comments-${doctor.id}">
+                        <h4>Comments (0)</h4>
+                        <textarea id="new-comment-${doctor.id}" placeholder="Write a comment..."></textarea>
+                        <button onclick="postComment('${doctor.id}')">Post Comment</button>
+                    </div>
+                `;
+                doctorsList.appendChild(doctorDiv);
+            });
+        }
+
+        async function viewComments(doctorId) {
+            const doctorCard = document.getElementById(`doctor-card-${doctorId}`);
+            const commentsDiv = document.getElementById(`comments-${doctorId}`);
+            
+           
+            doctorCard.classList.toggle('expanded');
+
+            if (commentsDiv.style.display === 'block') {
+                commentsDiv.style.display = 'none';
+            } else {
+                commentsDiv.style.display = 'block';
+                
+                const response = await fetch(`/doctor/comments?doctorId=${doctorId}`);
+                const comments = await response.json();
+
+                commentsDiv.innerHTML = `<h4>Comments (${comments.length})</h4>`;
+                
+                if (comments.length === 0) {
+                    commentsDiv.innerHTML += "<p>No comments yet.</p>";
+                } else {
+                    comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.classList.add('comment-item');
+                        commentDiv.innerHTML = `
+                            <p><strong>${comment.user.name}:</strong> ${comment.content}</p>
+                            <textarea id="reply-${comment.id}" placeholder="Write a comment..."></textarea>
+                            <button onclick="postReply('${doctorId}', '${comment.id}')">Comment</button>
+                        `;
+                        commentsDiv.appendChild(commentDiv);
+                    });
+                }
+            }
+        }
+
+
+        async function postComment(doctorId) {
+            const content = document.getElementById(`new-comment-${doctorId}`).value;
+
+            await fetch('/doctor/comments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ doctorId, content })
+            });
+
+            loadDoctors(); 
+        }
+
+        async function postReply(doctorId, parentId) {
+            const content = document.getElementById(`reply-${parentId}`).value;
+
+            await fetch('/doctor/comments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ doctorId, content, parentId })
+            });
+
+            loadDoctors(); 
+        }
+
+        window.onload = loadDoctors;
+    </script>
 </body>
-<script>
-    let allDoctors = []; 
-
-    async function loadDoctors() {
-        const response = await fetch('/patient/doctors');
-        allDoctors = await response.json(); 
-        renderDoctors(allDoctors);
-    }
-
-    function renderDoctors(doctors) {
-        const doctorsList = document.getElementById('doctors-list');
-        doctorsList.innerHTML = '';
-
-        doctors.forEach(doctor => {
-            const doctorDiv = document.createElement('div');
-            doctorDiv.innerHTML = `
-                <h3>${doctor.name}</h3>
-                <p>Specialization: ${doctor.specialization}</p>
-                <p>Bio: ${doctor.bio}</p>
-                <h4>Comments</h4>
-                <div id="comments-${doctor.id}"></div>
-                <textarea id="new-comment-${doctor.id}" placeholder="Write a comment..."></textarea>
-                <button onclick="postComment('${doctor.id}')">Post Comment</button>
-                <hr>
-            `;
-            doctorsList.appendChild(doctorDiv);
-
-            loadComments(doctor.id);
-        });
-    }
-
-    async function loadComments(doctorId) {
-        const response = await fetch(`/doctor/comments?doctorId=${doctorId}`);
-        const comments = await response.json();
-
-        const commentsDiv = document.getElementById(`comments-${doctorId}`);
-        commentsDiv.innerHTML = '';
-
-        comments.forEach(comment => {
-            const commentDiv = document.createElement('div');
-            commentDiv.innerHTML = `
-                <p><strong>${comment.patientName}:</strong> ${comment.content}</p>
-                <textarea id="reply-${comment.id}" placeholder="Write a reply..."></textarea>
-                <button onclick="postReply('${doctorId}', '${comment.id}')">Reply</button>
-                <div id="replies-${comment.id}">
-                    ${comment.replies.map(reply => `<p><strong>${reply.patientName}:</strong> ${reply.content}</p>`).join('')}
-                </div>
-            `;
-            commentsDiv.appendChild(commentDiv);
-        });
-    }
-
-    async function postComment(doctorId) {
-        const content = document.getElementById(`new-comment-${doctorId}`).value;
-
-        await fetch('/doctor/comments', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ doctorId, content }),
-        });
-
-        loadComments(doctorId);
-    }
-
-    async function postReply(doctorId, parentId) {
-        const content = document.getElementById(`reply-${parentId}`).value;
-
-        await fetch('/doctor/comments', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ doctorId, content, parentId }),
-        });
-
-        loadComments(doctorId);
-    }
-
-    async function searchDoctors() {
-        const searchInput = document.getElementById('search-input').value.toLowerCase();
-        const filteredDoctors = allDoctors.filter(doctor =>
-            doctor.name.toLowerCase().includes(searchInput) ||
-            doctor.specialization.toLowerCase().includes(searchInput)
-        );
-        renderDoctors(filteredDoctors); 
-    }
-
-    window.onload = loadDoctors; 
-</script>
-
 </html>
