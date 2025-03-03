@@ -15,9 +15,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Controller for rendering the add-doctor page
 const renderAddDoctorPage = (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/addNewDoctor.html'));  // Render the addNewDoctor.html page
+    res.sendFile(path.join(__dirname, '../views/addNewDoctor.html'));  
 };
 
 const addDoctor = async (req, res) => {

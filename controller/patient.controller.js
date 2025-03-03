@@ -37,7 +37,7 @@ const getComments = async (req, res) => {
   try {
       const comments = await db.comment.findMany({
           where: { doctorId },
-          include: { user: true, replies: true } // Fetch user and replies
+          include: { user: true, replies: true }
       });
       res.json(comments);
   } catch (error) {

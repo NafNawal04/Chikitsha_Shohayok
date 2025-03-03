@@ -46,14 +46,14 @@
 
        function displayDoctors(doctors) {
        const doctorListContainer = document.getElementById('doctor-list');
-       doctorListContainer.innerHTML = '';  // Clear existing content
+       doctorListContainer.innerHTML = ''; 
 
        doctors.forEach(doctor => {
        const doctorCard = document.createElement('div');
-       doctorCard.classList.add('doctor-card');  // Add styling class for doctor card
-       doctorCard.setAttribute('data-id', doctor.id);  // Add data-id attribute to the card
+       doctorCard.classList.add('doctor-card'); 
+       doctorCard.setAttribute('data-id', doctor.id);  
 
-       // Create the doctor's image or default image
+
        const doctorImage = document.createElement('div');
        doctorImage.classList.add('doctor-image');
        const imageElement = document.createElement('img');
@@ -61,7 +61,7 @@
        imageElement.alt = 'Doctor Image';
        doctorImage.appendChild(imageElement);
 
-       // Doctor's information
+
        const doctorInfo = document.createElement('div');
        doctorInfo.classList.add('doctor-info');
        const doctorName = document.createElement('h3');
@@ -75,18 +75,17 @@
        doctorInfo.appendChild(specialization);
        doctorInfo.appendChild(bio);
 
-       // Edit button for the image
+
        const editButton = document.createElement('button');
        editButton.classList.add('edit-btn');
        editButton.textContent = 'Edit Image';
        editButton.onclick = () => openEditImageModal(doctor);
 
-       // Append everything to the card
+
        doctorCard.appendChild(doctorImage);
        doctorCard.appendChild(doctorInfo);
        doctorCard.appendChild(editButton);
 
-       // Add the card to the container
        doctorListContainer.appendChild(doctorCard);
    });
 }
