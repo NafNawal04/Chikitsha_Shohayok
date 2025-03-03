@@ -57,38 +57,45 @@
         }
 
         async function viewComments(doctorId) {
-            const doctorCard = document.getElementById(`doctor-card-${doctorId}`);
-            const commentsDiv = document.getElementById(`comments-${doctorId}`);
-            
-           
-            doctorCard.classList.toggle('expanded');
+    const doctorCard = document.getElementById(`doctor-card-${doctorId}`);
+    const commentsDiv = document.getElementById(`comments-${doctorId}`);
 
-            if (commentsDiv.style.display === 'block') {
-                commentsDiv.style.display = 'none';
-            } else {
-                commentsDiv.style.display = 'block';
-                
-                const response = await fetch(`/doctor/comments?doctorId=${doctorId}`);
-                const comments = await response.json();
+    doctorCard.classList.toggle('expanded');
 
-                commentsDiv.innerHTML = `<h4>Comments (${comments.length})</h4>`;
-                
-                if (comments.length === 0) {
-                    commentsDiv.innerHTML += "<p>No comments yet.</p>";
-                } else {
-                    comments.forEach(comment => {
-                        const commentDiv = document.createElement('div');
-                        commentDiv.classList.add('comment-item');
-                        commentDiv.innerHTML = `
-                            <p><strong>${comment.user.name}:</strong> ${comment.content}</p>
-                            <textarea id="reply-${comment.id}" placeholder="Write a comment..."></textarea>
-                            <button onclick="postReply('${doctorId}', '${comment.id}')">Reply</button>
-                        `;
-                        commentsDiv.appendChild(commentDiv);
-                    });
-                }
-            }
+    if (commentsDiv.style.display === 'block') {
+        commentsDiv.style.display = 'none';
+    } else {
+        commentsDiv.style.display = 'block';
+
+        const response = await fetch(`/doctor/comments?doctorId=${doctorId}`);
+        const comments = await response.json();
+
+        commentsDiv.innerHTML = `<h4>Comments (${comments.length})</h4>`;
+
+        if (comments.length === 0) {
+            commentsDiv.innerHTML += "<p>No comments yet.</p>";
         }
+
+        const commentBox = document.createElement('div');
+        commentBox.classList.add('comment-item');
+        commentBox.innerHTML = `
+            <textarea id="new-comment-${doctorId}" placeholder="Write a comment..."></textarea>
+            <button onclick="postNewComment('${doctorId}')">Post Comment</button>
+        `;
+        commentsDiv.appendChild(commentBox);
+
+        comments.forEach(comment => {
+            const commentDiv = document.createElement('div');
+            commentDiv.classList.add('comment-item');
+            commentDiv.innerHTML = `
+                <p><strong>${comment.user.name}:</strong> ${comment.content}</p>
+                <textarea id="reply-${comment.id}" placeholder="Write a reply..."></textarea>
+                <button onclick="postReply('${doctorId}', '${comment.id}')">Reply</button>
+            `;
+            commentsDiv.appendChild(commentDiv);
+        });
+    }
+}
 
 
         async function postComment(doctorId) {
