@@ -2,21 +2,25 @@ Doctor Activity Report
 
 Doctor Name: Dr. Rajesh Mahal
 Specialization: Ophthalmologist
-Comments: 0
+Comments: 1
 
 Doctor Name: Dr. Arindam Saha
 Specialization: Eye Specialist
 Comments: 5
 
-Doctor Name: Loren
-Specialization: sss
+Doctor Name: Dr. Jennie
+Specialization: Cardiologist
 Comments: 0
 
-Doctor Name: eee
-Specialization: www
+Doctor Name: Dr. Ayesha Singh
+Specialization: Neuro Surgeon
 Comments: 0
 
-Doctor Name: wqs
-Specialization: qwd
+Doctor Name: Dr. Walter Raltz
+Specialization: Medicine Specialist
+Comments: 0
+
+Doctor Name: Afiya 
+Specialization: Neurology
 Comments: 0
 

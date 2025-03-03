@@ -80,7 +80,7 @@
                 commentBox.classList.add('comment-item');
                 commentBox.innerHTML = `
                     <textarea id="new-comment-${doctorId}" placeholder="Write a comment..."></textarea>
-                    <button onclick="postNewComment('${doctorId}')">Post Comment</button>
+                    <button onclick="postComment('${doctorId}')">Post Comment</button>
                 `;
                 commentsDiv.appendChild(commentBox);
 
@@ -122,6 +122,14 @@
             loadDoctors(); 
         }
 
+        async function searchDoctors() {
+        const searchInput = document.getElementById('search-input').value.toLowerCase();
+        const filteredDoctors = allDoctors.filter(doctor =>
+            doctor.name.toLowerCase().includes(searchInput) ||
+            doctor.specialization.toLowerCase().includes(searchInput)
+        );
+        renderDoctors(filteredDoctors); 
+    }
         window.onload = loadDoctors;
     </script>
 </body>

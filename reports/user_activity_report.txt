@@ -1,14 +1,15 @@
 
 User Activity Report
 
-Total Users: 4
-Active Users (last 30 days): 2
+Total Users: 5
+Active Users (last 30 days): 3
 Inactive Users (last 30 days): 2
 
 Detailed Report:
 Active Users:
 Name: Admin, Email: moumita@gmail.com
 Name: Nafisa, Email: nafisa@gmail.com
+Name: Lorent, Email: Gomex@gmail.com
 
 Inactive Users:
 Name: Nafisa Nawal Moumita 210042130, Email: nafisanawal@iut-dhaka.edu
