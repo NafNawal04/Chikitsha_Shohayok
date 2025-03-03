@@ -1,0 +1,117 @@
+.content-wrapper {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.doctor-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));  
+    gap: 20px;
+    justify-content: center;
+    padding: 10px;
+}
+
+.doctor-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.doctor-card:hover {
+    transform: translateY(-10px); 
+}
+
+.doctor-image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+
+.doctor-info {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+h3 {
+    margin: 10px 0;
+    font-size: 24px;
+    color: #333;
+}
+
+p {
+    font-size: 14px;
+    color: #666;
+}
+
+button.edit-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button.edit-btn:hover {
+    background-color: #218838;
+}
+
+button.edit-btn:active {
+    background-color: #1e7e34;
+}
+
+
+.save-btn, .undo-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 48%; 
+    margin: 5px 5px;  
+    display: inline-block;
+    text-align: center;
+}
+
+.save-btn {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #16a085;
+}
+
+.undo-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.undo-btn:hover {
+    background-color: #c0392b;
+}
+
+.save-btn:active, .undo-btn:active {
+    transform: scale(0.98); 
+}
