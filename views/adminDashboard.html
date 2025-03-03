@@ -1,10 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../styles/adminDashboard.css">
 </head>
 <body>
-    <h1>Welcome, Admin!</h1>
-    <p>Here you can manage doctors, appointments, and more.</p>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Admin Dashboard</h2>
+            </div>
+            <ul class="menu">
+                <li><a href="#">See Daily Users</a></li>
+                <li><a onclick="loadContent('./dashboard/seeDoctorList')">See Doctors List</a></li>
+                <li><a onclick="loadContent('./dashboard/newDoctor')">Add a New Doctor</a></li>
+            </ul>
+        </div>
+        <div class="content" id="content-area">
+            <h1>Welcome to the Admin Dashboard</h1>
+            <p>Select an option from the sidebar to manage your dashboard.</p>
+        </div>
+    </div>
+
+    <script>
+        function loadContent(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('content-area').innerHTML = data;
+
+                    if (url === '/admin/dashboard/seeDoctorList') {
+                       fetchDoctors();  
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('content-area').innerHTML = '<p>Error loading content.</p>';
+                    console.error('Error:', error);
+                });
+        }
+
+    </script>
 </body>
+
 </html>

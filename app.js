@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const path = require('path');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy; 
@@ -12,6 +13,9 @@ const db = require('./db');
 
 
 app.use(express.static('views'));
+app.use('/styles', express.static(path.join(__dirname, 'styles')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -126,7 +130,6 @@ app.get('/auth/google/callback',
 );
 
 
-const landingPageRoutes = require('./routes/landing.routes.js');
 const signupRoutes = require('./routes/signup.routes.js');
 const loginRoutes = require('./routes/login.routes.js');
 const adminRoutes = require('./routes/admin.routes.js');
@@ -134,12 +137,14 @@ const patientRoutes = require('./routes/patient.routes.js');
 
 app.use(ensureAuthenticated);
 
-app.use(landingPageRoutes);
 app.use(signupRoutes);
 app.use(loginRoutes);
 app.use(adminRoutes);
 app.use(patientRoutes);
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './views/landingPage.html')); 
+});
 
 
 const port = 3000;
