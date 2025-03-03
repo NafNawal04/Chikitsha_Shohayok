@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Doctor</title>
+    <link rel="stylesheet" href="../styles/addNewDoctor.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add New Doctor</h2>
+        <form action="/admin/add-doctor" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="profileImage">Profile Image:</label>
+                <input type="file" id="profileImage" name="profileImage" accept="image/*" required>
+                <img id="previewImage" src="#" alt="Image preview" style="display:none;">
+            </div>
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bio">Bio:</label>
+                <textarea id="bio" name="bio" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="specialization">Specialization:</label>
+                <input type="text" id="specialization" name="specialization" required>
+            </div>
+
+            <div class="form-group">
+                <label for="schedule">Schedule:</label>
+                <input type="text" id="schedule" name="schedule" required>
+            </div>
+
+            <div class="form-group">
+                <label for="roomNumber">Room Number:</label>
+                <input type="text" id="roomNumber" name="roomNumber" required>
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="save-btn">Save</button>
+                <button type="reset" class="delete-btn">Clear</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('profileImage').addEventListener('change', function(e) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('previewImage').src = event.target.result;
+                document.getElementById('previewImage').style.display = 'block';
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        });
+    </script>
+</body>
+</html>
