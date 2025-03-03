@@ -22,6 +22,11 @@ const handleLogin = async (req, res) => {
         req.session.email = user.email;
         req.session.role = user.role; 
 
+        await db.user.update({
+            where: { email: user.email },
+            data: { lastLogin: new Date() },
+        });
+
         if (user.role === 'admin') {
             res.redirect('/admin/dashboard'); 
         } else {

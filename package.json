@@ -16,6 +16,7 @@
     "@prisma/client": "^5.22.0",
     "bcrypt": "^5.1.1",
     "passport-google-oauth20": "^2.0.0",
+    "pdfmake": "^0.2.18",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1"
   }

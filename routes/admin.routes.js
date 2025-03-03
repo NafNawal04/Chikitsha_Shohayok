@@ -20,6 +20,14 @@ router.get('/admin/dashboard/seeDoctorList', ensureAdmin, (req, res) => {
     res.sendFile(path.join(__dirname, '../views/seeDoctorList.html'));
 });
 
+
+
+router.get('/admin/dashboard/seeReports', ensureAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/seeReports.html')); 
+});
+
+
+
 router.get('/admin/add-doctor', renderAddDoctorPage);
 
 router.post('/admin/add-doctor', upload.single('profileImage'), addDoctor);

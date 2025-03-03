@@ -1,0 +1,15 @@
+
+User Activity Report
+
+Total Users: 4
+Active Users (last 30 days): 2
+Inactive Users (last 30 days): 2
+
+Detailed Report:
+Active Users:
+Name: Admin, Email: moumita@gmail.com
+Name: Nafisa, Email: nafisa@gmail.com
+
+Inactive Users:
+Name: Nafisa Nawal Moumita 210042130, Email: nafisanawal@iut-dhaka.edu
+Name: Rahela Khatun, Email: rahela@gmail.com

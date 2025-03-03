@@ -134,6 +134,7 @@ const signupRoutes = require('./routes/signup.routes.js');
 const loginRoutes = require('./routes/login.routes.js');
 const adminRoutes = require('./routes/admin.routes.js');
 const patientRoutes = require('./routes/patient.routes.js');
+const reportRoutes = require('./routes/adminReport.routes.js');
 
 app.use(ensureAuthenticated);
 
@@ -141,6 +142,7 @@ app.use(signupRoutes);
 app.use(loginRoutes);
 app.use(adminRoutes);
 app.use(patientRoutes);
+app.use(reportRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './views/landingPage.html')); 
