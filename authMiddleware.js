@@ -1,5 +1,5 @@
 const ensureAuthenticated = (req, res, next) =>{
-    const publicPaths = ['/', '/login', '/signup', '/auth/google', '/auth/google/callback'];
+    const publicPaths = ['/', '/login', '/signup', '/auth/google', '/auth/google/callback','/auth/github', '/auth/github/callback'];
     if (publicPaths.includes(req.path) || req.session.isAuthenticated) {
         return next();
     }

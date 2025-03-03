@@ -117,3 +117,23 @@ body {
     width: 20px;
     height: 20px;
 }
+
+
+.login-container .github-login {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ddd;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.login-container .github-login:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}

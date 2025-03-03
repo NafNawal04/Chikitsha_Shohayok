@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GitHubStrategy = require("passport-github2").Strategy;
 const LocalStrategy = require('passport-local').Strategy; 
 const app = express();
 const session = require('express-session');
@@ -33,6 +34,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
@@ -64,6 +66,47 @@ passport.use(new GoogleStrategy({
   }
 }));
 
+passport.use(new GitHubStrategy(
+    {
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/auth/github/callback",
+      scope: ['user:email']
+    },
+    async(accessToken, refreshToken, profile, done) => {
+      try {
+
+        if (!profile.emails || profile.emails.length === 0) {
+          return done(new Error("GitHub profile doesn't have an email."));
+        }
+
+        const user = await db.user.findUnique({
+          where: { email: profile.emails[0].value }
+        });
+    
+        if (!user) {
+        
+          const newUser = await db.user.create({
+            data: {
+              name: profile.displayName,
+              email: profile.emails[0].value,
+              password: null, 
+            }
+          });
+    
+          newUser.isNewUser = true; 
+          return done(null, newUser);
+        }
+    
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
+      }
+    }
+  )
+);
+
+
 passport.use(new LocalStrategy({
     usernameField: 'email', 
     passwordField: 'password'
@@ -79,7 +122,7 @@ passport.use(new LocalStrategy({
       }
 
       if (!user.password) {
-        return done(null, false, { message: 'No password set. Please log in with Google.' });
+        return done(null, false, { message: 'No password set. Please log in with Google or Github.' });
       }
 
       const match = await bcrypt.compare(password, user.password);
@@ -112,22 +155,6 @@ passport.deserializeUser(async (email, done) => {
   }
 });
 
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    if (req.user) {
-      req.session.isAuthenticated = true;
-      res.redirect('/patient/dashboard');
-      
-    } else {
-      res.redirect('/login');
-    }
-  }
-);
 
 
 const signupRoutes = require('./routes/signup.routes.js');
@@ -135,6 +162,8 @@ const loginRoutes = require('./routes/login.routes.js');
 const adminRoutes = require('./routes/admin.routes.js');
 const patientRoutes = require('./routes/patient.routes.js');
 const reportRoutes = require('./routes/adminReport.routes.js');
+const googleRoutes = require('./routes/googleAuth.routes.js');
+const githubRoutes = require('./routes/githubAuth.routes.js');
 
 app.use(ensureAuthenticated);
 
@@ -143,6 +172,9 @@ app.use(loginRoutes);
 app.use(adminRoutes);
 app.use(patientRoutes);
 app.use(reportRoutes);
+app.use(googleRoutes);
+app.use(githubRoutes);
+
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './views/landingPage.html')); 
