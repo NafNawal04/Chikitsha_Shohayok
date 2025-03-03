@@ -10,23 +10,33 @@
 <body>
   <div>
     
-    <button id="generateReportBtn">Generate User Activity Report</button>
+    <button id="generateUserActivityBtn">
+        Generate User Activity Report</button>
 
-    <div id="downloadLink" style="display: none;">
-      <p>Your report is ready. Click below to download</p>
-      <a href="" id="downloadTxt" target="_blank">Download TXT</a>
-    </div>
+        <div id="downloadLinkUserActivity" style="display: none;">
+        <p>Your report is ready. Click below to download</p>
+        <a href="" id="downloadUserActivityTxt" target="_blank">Download TXT</a>
+        </div>
 
+    <button id="generateDoctorActivityBtn">
+        Generate Doctor Activity Report</button>
+
+        <div id="downloadLinkDoctorActivity" style="display: none;">
+        <p>Your report is ready. Click below to download</p>
+        <a href="" id="downloadDoctorActivityTxt" target="_blank">Download TXT</a>
+        </div>
     
   </div>
   <script>
-    document.getElementById("generateReportBtn").addEventListener("click", async () => {
+    document.getElementById("generateUserActivityBtn").addEventListener("click", async () => {
+
         try {
             const response = await fetch('/admin/reports/user-activity/txt');
             const data = await response.json();
+
             if (response.ok) {
-                document.getElementById("downloadLink").style.display = 'block';
-                document.getElementById("downloadTxt").href = data.fileUrl;
+                document.getElementById("downloadLinkUserActivity").style.display = 'block';
+                document.getElementById("downloadUserActivityTxt").href = data.fileUrl;
             } else {
                 alert(data.message || 'Error generating the report.');
             }
@@ -34,6 +44,25 @@
             alert('Error generating the report.');
         }
     });
+
+    document.getElementById("generateDoctorActivityBtn").addEventListener("click", async () => {
+
+        try {
+            const response = await fetch('/admin/reports/doctor-activity/txt');
+            const data = await response.json();
+            
+            if (response.ok) {
+                document.getElementById("downloadLinkDoctorActivity").style.display = 'block';
+                document.getElementById("downloadDoctorActivityTxt").href = data.fileUrl;
+            } else {
+                alert(data.message || 'Error generating the report.');
+            }
+        } catch (err) {
+            console.error('No generating the report man', err);
+            alert('Error generating the report.');
+        }
+        });
+
     </script>
 </body>
 </html>

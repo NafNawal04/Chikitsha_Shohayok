@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
-const { generateUserActivityReport } = require('../controller/adminReport.controller');
+const { generateUserActivityReport ,generateDoctorActivityReport } = require('../controller/adminReport.controller');
 
 
 router.get('/admin/reports/user-activity/txt', generateUserActivityReport);
+router.get('/admin/reports/doctor-activity/txt', generateDoctorActivityReport);
+
+
 
 router.get('/admin/reports/download/:filename', (req, res) => {
     const fileName = req.params.filename;

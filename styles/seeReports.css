@@ -39,7 +39,7 @@ button:hover {
     background-color: #16a085;
 }
 
-#downloadLink {
+#downloadLinkUserActivity {
     display: block;
     margin: 20px auto;
     text-align: center;
@@ -53,12 +53,31 @@ button:hover {
     text-decoration: none;
 }
 
-#downloadLink:hover {
-    background-color: #7c219f;
+#downloadLinkUserActivity:hover {
+    background-color: #a438ce;
 }
 
 p {
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     color: #ffffff;
+}
+
+
+#downloadLinkDoctorActivity {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    padding: 15px;
+    font-size: 18px;
+    background-color: #308cc9;
+    color: white;
+    border-radius: 5px;
+    width: 30%;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#downloadLinkDoctorActivity:hover {
+    background-color: #a438ce;
 }

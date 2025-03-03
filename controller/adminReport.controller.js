@@ -43,4 +43,33 @@ ${inactiveUsers > 0 ? users.filter(user => !activeUsers.includes(user)).map(user
     }
 }
 
-module.exports = { generateUserActivityReport };
+
+async function generateDoctorActivityReport(req, res) {
+    try {
+        const doctors = await db.doctor.findMany();
+        let reportData = `Doctor Activity Report\n\n`;
+
+        doctors.forEach(doctor => {
+            const doctorComments = doctor.comments ? doctor.comments.length : 0;
+            reportData += `Doctor Name: ${doctor.name}\n`;
+            reportData += `Specialization: ${doctor.specialization}\n`;
+            reportData += `Comments: ${doctorComments}\n\n`;
+        });
+
+        const filePath = path.join(__dirname, '../reports/doctor_activity_report.txt');
+        fs.writeFileSync(filePath, reportData);
+
+
+        res.status(200).json({
+            message: 'Report generated successfully',
+            fileUrl: `/admin/reports/download/doctor_activity_report.txt`
+        });
+
+    } catch (err) {
+        console.log('Cannot generate doctors report', err);
+        res.status(500).json({ message: 'Error generating Doctor Activity Report' });
+    }
+}
+
+
+module.exports = { generateUserActivityReport, generateDoctorActivityReport };
