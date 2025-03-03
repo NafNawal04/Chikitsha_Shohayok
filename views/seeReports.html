@@ -1,68 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>See Reports</title>
-  <link rel="stylesheet" href="/styles/seeReports.css">
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See Reports</title>
+    <link rel="stylesheet" href="/styles/adminDashboard.css">
+    <link rel="stylesheet" href="/styles/seeReports.css">
 </head>
 <body>
-  <div>
-    
-    <button id="generateUserActivityBtn">
-        Generate User Activity Report</button>
-
-        <div id="downloadLinkUserActivity" style="display: none;">
-        <p>Your report is ready. Click below to download</p>
-        <a href="" id="downloadUserActivityTxt" target="_blank">Download TXT</a>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Admin Dashboard</h2>
+            </div>
+            <ul class="menu">
+                <li><a href="/admin/dashboard/seeReports">See Reports</a></li>
+                <li><a href="/admin/dashboard/seeDoctorList">See Doctors List</a></li>
+                <li><a href="/admin/dashboard/newDoctor">Add a New Doctor</a></li>
+            </ul>
         </div>
-
-    <button id="generateDoctorActivityBtn">
-        Generate Doctor Activity Report</button>
-
-        <div id="downloadLinkDoctorActivity" style="display: none;">
-        <p>Your report is ready. Click below to download</p>
-        <a href="" id="downloadDoctorActivityTxt" target="_blank">Download TXT</a>
-        </div>
-    
-  </div>
-  <script>
-    document.getElementById("generateUserActivityBtn").addEventListener("click", async () => {
-
-        try {
-            const response = await fetch('/admin/reports/user-activity/txt');
-            const data = await response.json();
-
-            if (response.ok) {
-                document.getElementById("downloadLinkUserActivity").style.display = 'block';
-                document.getElementById("downloadUserActivityTxt").href = data.fileUrl;
-            } else {
-                alert(data.message || 'Error generating the report.');
-            }
-        } catch (err) {
-            alert('Error generating the report.');
-        }
-    });
-
-    document.getElementById("generateDoctorActivityBtn").addEventListener("click", async () => {
-
-        try {
-            const response = await fetch('/admin/reports/doctor-activity/txt');
-            const data = await response.json();
+        <div class="content" id="content-area">
+            <button id="generateUserActivityBtn">
+                Generate User Activity Report</button>
+        
+                <div id="downloadLinkUserActivity" style="display: none;">
+                <p>Your report is ready. Click below to download</p>
+                <a href="" id="downloadUserActivityTxt" target="_blank">Download TXT</a>
+                </div>
+        
+            <button id="generateDoctorActivityBtn">
+                Generate Doctor Activity Report</button>
+        
+                <div id="downloadLinkDoctorActivity" style="display: none;">
+                <p>Your report is ready. Click below to download</p>
+                <a href="" id="downloadDoctorActivityTxt" target="_blank">Download TXT</a>
+                </div>
             
-            if (response.ok) {
-                document.getElementById("downloadLinkDoctorActivity").style.display = 'block';
-                document.getElementById("downloadDoctorActivityTxt").href = data.fileUrl;
-            } else {
-                alert(data.message || 'Error generating the report.');
+        </div>
+    </div>
+    <script>
+        document.getElementById("generateUserActivityBtn").addEventListener("click", async () => {
+    
+            try {
+                const response = await fetch('/admin/reports/user-activity/txt');
+                const data = await response.json();
+    
+                if (response.ok) {
+                    document.getElementById("downloadLinkUserActivity").style.display = 'block';
+                    document.getElementById("downloadUserActivityTxt").href = data.fileUrl;
+                } else {
+                    alert(data.message || 'Error generating the report.');
+                }
+            } catch (err) {
+                alert('Error generating the report.');
             }
-        } catch (err) {
-            console.error('No generating the report man', err);
-            alert('Error generating the report.');
-        }
         });
+    
+        document.getElementById("generateDoctorActivityBtn").addEventListener("click", async () => {
+    
+            try {
+                const response = await fetch('/admin/reports/doctor-activity/txt');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById("downloadLinkDoctorActivity").style.display = 'block';
+                    document.getElementById("downloadDoctorActivityTxt").href = data.fileUrl;
+                } else {
+                    alert(data.message || 'Error generating the report.');
+                }
+            } catch (err) {
+                console.error('No generating the report man', err);
+                alert('Error generating the report.');
+            }
+            });
+    
+        </script>
 
-    </script>
 </body>
 </html>

@@ -1,152 +1,166 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Doctors List</title>
+    <title>See Doctor's List</title>
+    <link rel="stylesheet" href="/styles/adminDashboard.css">
     <link rel="stylesheet" href="/styles/seeDoctorList.css"> 
 </head>
 <body>
-    <div class="content-wrapper">
-        <h1>Doctors List</h1>
-        <div class="doctor-list" id="doctor-list">
-           
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Admin Dashboard</h2>
+            </div>
+            <ul class="menu">
+                <li><a href="/admin/dashboard/seeReports">See Reports</a></li>
+                <li><a href="/admin/dashboard/seeDoctorList">See Doctors List</a></li>
+                <li><a href="/admin/dashboard/newDoctor">Add a New Doctor</a></li>
+            </ul>
+        </div>
+        <div class="content" id="content-area">
+            <div class="content-wrapper">
+                <h1>Doctors List</h1>
+                <div class="doctor-list" id="doctor-list">
+                   
+                </div>
+            </div>
         </div>
     </div>
-
     <script>
-         let doctors = [];
+        let doctors = [];
 
-        async function fetchDoctors() {
-            try {
-                const response = await fetch('/admin/see-doctors-list');
-                const doctors = await response.json();
-                
-                console.log('Doctors:', doctors); 
-                displayDoctors(doctors);
-            } catch (error) {
-                console.error('Error fetching doctors:', error);
-                alert('Failed to fetch doctors');
-            }
-        }
+       async function fetchDoctors() {
+           try {
+               const response = await fetch('/admin/see-doctors-list');
+               const doctors = await response.json();
+               
+               console.log('Doctors:', doctors); 
+               displayDoctors(doctors);
+           } catch (error) {
+               console.error('Error fetching doctors:', error);
+               alert('Failed to fetch doctors');
+           }
+       }
 
-        function displayDoctors(doctors) {
-        const doctorListContainer = document.getElementById('doctor-list');
-        doctorListContainer.innerHTML = '';  // Clear existing content
+       function displayDoctors(doctors) {
+       const doctorListContainer = document.getElementById('doctor-list');
+       doctorListContainer.innerHTML = '';  // Clear existing content
 
-        doctors.forEach(doctor => {
-        const doctorCard = document.createElement('div');
-        doctorCard.classList.add('doctor-card');  // Add styling class for doctor card
-        doctorCard.setAttribute('data-id', doctor.id);  // Add data-id attribute to the card
+       doctors.forEach(doctor => {
+       const doctorCard = document.createElement('div');
+       doctorCard.classList.add('doctor-card');  // Add styling class for doctor card
+       doctorCard.setAttribute('data-id', doctor.id);  // Add data-id attribute to the card
 
-        // Create the doctor's image or default image
-        const doctorImage = document.createElement('div');
-        doctorImage.classList.add('doctor-image');
-        const imageElement = document.createElement('img');
-        imageElement.src = doctor.profileImage ? `/uploads/${doctor.profileImage}` : '/uploads/default-avatar.jpg';
-        imageElement.alt = 'Doctor Image';
-        doctorImage.appendChild(imageElement);
+       // Create the doctor's image or default image
+       const doctorImage = document.createElement('div');
+       doctorImage.classList.add('doctor-image');
+       const imageElement = document.createElement('img');
+       imageElement.src = doctor.profileImage ? `/uploads/${doctor.profileImage}` : '/uploads/default-avatar.jpg';
+       imageElement.alt = 'Doctor Image';
+       doctorImage.appendChild(imageElement);
 
-        // Doctor's information
-        const doctorInfo = document.createElement('div');
-        doctorInfo.classList.add('doctor-info');
-        const doctorName = document.createElement('h3');
-        doctorName.textContent = doctor.name;
-        const specialization = document.createElement('p');
-        specialization.innerHTML = `<strong>Specialization:</strong> ${doctor.specialization}`;
-        const bio = document.createElement('p');
-        bio.innerHTML = `<strong>Bio:</strong> ${doctor.bio.substring(0, 100)}...`;
+       // Doctor's information
+       const doctorInfo = document.createElement('div');
+       doctorInfo.classList.add('doctor-info');
+       const doctorName = document.createElement('h3');
+       doctorName.textContent = doctor.name;
+       const specialization = document.createElement('p');
+       specialization.innerHTML = `<strong>Specialization:</strong> ${doctor.specialization}`;
+       const bio = document.createElement('p');
+       bio.innerHTML = `<strong>Bio:</strong> ${doctor.bio.substring(0, 100)}...`;
 
-        doctorInfo.appendChild(doctorName);
-        doctorInfo.appendChild(specialization);
-        doctorInfo.appendChild(bio);
+       doctorInfo.appendChild(doctorName);
+       doctorInfo.appendChild(specialization);
+       doctorInfo.appendChild(bio);
 
-        // Edit button for the image
-        const editButton = document.createElement('button');
-        editButton.classList.add('edit-btn');
-        editButton.textContent = 'Edit Image';
-        editButton.onclick = () => openEditImageModal(doctor);
+       // Edit button for the image
+       const editButton = document.createElement('button');
+       editButton.classList.add('edit-btn');
+       editButton.textContent = 'Edit Image';
+       editButton.onclick = () => openEditImageModal(doctor);
 
-        // Append everything to the card
-        doctorCard.appendChild(doctorImage);
-        doctorCard.appendChild(doctorInfo);
-        doctorCard.appendChild(editButton);
+       // Append everything to the card
+       doctorCard.appendChild(doctorImage);
+       doctorCard.appendChild(doctorInfo);
+       doctorCard.appendChild(editButton);
 
-        // Add the card to the container
-        doctorListContainer.appendChild(doctorCard);
-    });
+       // Add the card to the container
+       doctorListContainer.appendChild(doctorCard);
+   });
 }
 
 
-        function openEditImageModal(doctor) {
-     
-        const doctorCard = document.querySelector(`.doctor-card[data-id='${doctor.id}']`);
-        const existingImage = doctorCard.querySelector('img');
-        const editButton = doctorCard.querySelector('.edit-btn');
+       function openEditImageModal(doctor) {
+    
+       const doctorCard = document.querySelector(`.doctor-card[data-id='${doctor.id}']`);
+       const existingImage = doctorCard.querySelector('img');
+       const editButton = doctorCard.querySelector('.edit-btn');
 
-        editButton.style.display = 'none';
+       editButton.style.display = 'none';
 
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*';
+       const fileInput = document.createElement('input');
+       fileInput.type = 'file';
+       fileInput.accept = 'image/*';
 
-        const saveButton = document.createElement('button');
-        saveButton.textContent = 'Save Image';
-        saveButton.classList.add('save-btn');
+       const saveButton = document.createElement('button');
+       saveButton.textContent = 'Save Image';
+       saveButton.classList.add('save-btn');
 
-        const undoButton = document.createElement('button');
-        undoButton.textContent = 'Undo';
-        undoButton.classList.add('undo-btn');
+       const undoButton = document.createElement('button');
+       undoButton.textContent = 'Undo';
+       undoButton.classList.add('undo-btn');
 
-        doctorCard.appendChild(fileInput);
-        doctorCard.appendChild(saveButton);
-        doctorCard.appendChild(undoButton);
+       doctorCard.appendChild(fileInput);
+       doctorCard.appendChild(saveButton);
+       doctorCard.appendChild(undoButton);
 
-        saveButton.onclick = async () => {
-            const file = fileInput.files[0];
-            if (!file) {
-                alert('Please select a new image.');
-                return;
-            }
+       saveButton.onclick = async () => {
+           const file = fileInput.files[0];
+           if (!file) {
+               alert('Please select a new image.');
+               return;
+           }
 
-            const formData = new FormData();
-            formData.append('profileImage', file);
-            formData.append('doctorId', doctor.id);
+           const formData = new FormData();
+           formData.append('profileImage', file);
+           formData.append('doctorId', doctor.id);
 
-            try {
-                const response = await fetch('/admin/upload-doctor-image', {
-                    method: 'POST',
-                    body: formData,
-                });
+           try {
+               const response = await fetch('/admin/upload-doctor-image', {
+                   method: 'POST',
+                   body: formData,
+               });
 
-                const result = await response.json();
-                if (result.success) {
-                    alert('Image updated successfully!');
-                    existingImage.src = result.imageUrl;  
-                    fileInput.remove(); 
-                    saveButton.remove(); 
-                    undoButton.remove();  
-                    editButton.style.display = 'block'; 
-                } else {
-                    alert('Failed to update image.');
-                }
-            } catch (error) {
-                console.error('Error updating image:', error);
-                alert('Error updating image');
-            }
-        };
-
-
-        undoButton.onclick = () => {
-            fileInput.remove(); 
-            saveButton.remove(); 
-            undoButton.remove();  
-            editButton.style.display = 'block'; 
-        };
-    }
+               const result = await response.json();
+               if (result.success) {
+                   alert('Image updated successfully!');
+                   existingImage.src = result.imageUrl;  
+                   fileInput.remove(); 
+                   saveButton.remove(); 
+                   undoButton.remove();  
+                   editButton.style.display = 'block'; 
+               } else {
+                   alert('Failed to update image.');
+               }
+           } catch (error) {
+               console.error('Error updating image:', error);
+               alert('Error updating image');
+           }
+       };
 
 
-        document.addEventListener('DOMContentLoaded', fetchDoctors);
-    </script>
+       undoButton.onclick = () => {
+           fileInput.remove(); 
+           saveButton.remove(); 
+           undoButton.remove();  
+           editButton.style.display = 'block'; 
+       };
+   }
+
+
+       document.addEventListener('DOMContentLoaded', fetchDoctors);
+   </script>
 </body>
 </html>

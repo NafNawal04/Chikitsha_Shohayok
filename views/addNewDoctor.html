@@ -4,48 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Doctor</title>
-    <link rel="stylesheet" href="../styles/addNewDoctor.css">
+    <link rel="stylesheet" href="/styles/adminDashboard.css">
+    <link rel="stylesheet" href="/styles/addNewDoctor.css">
 </head>
 <body>
-    <div class="form-container">
-        <h2>Add New Doctor</h2>
-        <form action="/admin/add-doctor" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="profileImage">Profile Image:</label>
-                <input type="file" id="profileImage" name="profileImage" accept="image/*" required>
-                <img id="previewImage" src="#" alt="Image preview" style="display:none;">
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Admin Dashboard</h2>
             </div>
-
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+            <ul class="menu">
+                <li><a href="/admin/dashboard/seeReports">See Reports</a></li>
+                <li><a href="/admin/dashboard/seeDoctorList">See Doctors List</a></li>
+                <li><a href="/admin/dashboard/newDoctor">Add a New Doctor</a></li>
+            </ul>
+        </div>
+        <div class="content" id="content-area">
+            <div class="form-container">
+                <h2>Add New Doctor</h2>
+                <form action="/admin/add-doctor" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="profileImage">Profile Image:</label>
+                        <input type="file" id="profileImage" name="profileImage" accept="image/*" required>
+                        <img id="previewImage" src="#" alt="Image preview" style="display:none;">
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="bio">Bio:</label>
+                        <textarea id="bio" name="bio" required></textarea>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="specialization">Specialization:</label>
+                        <input type="text" id="specialization" name="specialization" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="schedule">Schedule:</label>
+                        <input type="text" id="schedule" name="schedule" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="roomNumber">Room Number:</label>
+                        <input type="text" id="roomNumber" name="roomNumber" required>
+                    </div>
+        
+                    <div class="buttons">
+                        <button type="submit" class="save-btn">Save</button>
+                        <button type="reset" class="delete-btn">Clear</button>
+                    </div>
+                </form>
             </div>
-
-            <div class="form-group">
-                <label for="bio">Bio:</label>
-                <textarea id="bio" name="bio" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="specialization">Specialization:</label>
-                <input type="text" id="specialization" name="specialization" required>
-            </div>
-
-            <div class="form-group">
-                <label for="schedule">Schedule:</label>
-                <input type="text" id="schedule" name="schedule" required>
-            </div>
-
-            <div class="form-group">
-                <label for="roomNumber">Room Number:</label>
-                <input type="text" id="roomNumber" name="roomNumber" required>
-            </div>
-
-            <div class="buttons">
-                <button type="submit" class="save-btn">Save</button>
-                <button type="reset" class="delete-btn">Clear</button>
-            </div>
-        </form>
+        </div>
     </div>
 
     <script>

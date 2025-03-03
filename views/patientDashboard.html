@@ -82,7 +82,7 @@
                         commentDiv.innerHTML = `
                             <p><strong>${comment.user.name}:</strong> ${comment.content}</p>
                             <textarea id="reply-${comment.id}" placeholder="Write a comment..."></textarea>
-                            <button onclick="postReply('${doctorId}', '${comment.id}')">Comment</button>
+                            <button onclick="postReply('${doctorId}', '${comment.id}')">Reply</button>
                         `;
                         commentsDiv.appendChild(commentDiv);
                     });

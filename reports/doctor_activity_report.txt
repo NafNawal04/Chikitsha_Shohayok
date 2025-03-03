@@ -6,7 +6,7 @@ Comments: 0
 
 Doctor Name: Dr. Arindam Saha
 Specialization: Eye Specialist
-Comments: 0
+Comments: 5
 
 Doctor Name: Loren
 Specialization: sss

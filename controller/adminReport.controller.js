@@ -46,7 +46,12 @@ ${inactiveUsers > 0 ? users.filter(user => !activeUsers.includes(user)).map(user
 
 async function generateDoctorActivityReport(req, res) {
     try {
-        const doctors = await db.doctor.findMany();
+        const doctors = await db.doctor.findMany({
+            include: {
+                comments: true  
+            }
+        });
+
         let reportData = `Doctor Activity Report\n\n`;
 
         doctors.forEach(doctor => {
