@@ -4,24 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/auth.css">
 </head>
 <body>
-    <div>
+
+    <div class="login-container">
         <h1>Login</h1>
         <form action="/login" method="POST">
-            <div>
-                <label for="email">Email</label><br>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <br>
-            <div>
-                <label for="password">Password</label><br>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <br>
-            <div>
-                <button type="submit">Login</button>
-            </div>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <button type="submit">Login</button>
             <button type="button" class="google-login" onclick="window.location.href='/auth/google'">
                 <svg class="google-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px">
                     <path fill="#EA4335" d="M24 9.5c3.4 0 6.4 1.2 8.8 3.1l6.6-6.6C35.1 2.6 29.9 0 24 0 14.4 0 6.2 5.6 2.2 13.6l7.7 6c2-6.1 7.6-10.1 14.1-10.1z"></path>
@@ -32,8 +29,7 @@
                 Log in with Google
             </button>
         </form>
-        <br>
-        <a href="/signup">Don't have an account? Sign up here</a>
+        <a href="/signup">Don't have an account? <strong>Sign up, it's free!</strong></a>
     </div>
 </body>
 </html>
