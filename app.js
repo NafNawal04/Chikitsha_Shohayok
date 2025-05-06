@@ -13,7 +13,7 @@ const {ensureAuthenticated} = require('./authMiddleware.js');
 const db = require('./db');
 
 
-app.use(express.static('views'));
+app.use(express.static(path.join(__dirname, 'views')));
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -177,11 +177,10 @@ app.use(githubRoutes);
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './views/landingPage.html')); 
+  res.sendFile(path.join(__dirname, 'views', 'landingPage.html'));
 });
 
-
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`App is listening to port ${port}`);
 });
